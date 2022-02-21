@@ -2,6 +2,10 @@
 
 @section('usersPermisions')
 
+@if(Auth::check())
+
+@if (Auth::user()->user_types==1)
+
 <div class="container py-5">
     <div class="row">
       <div class="col-sm">
@@ -17,7 +21,7 @@
                 <tbody>
                     @foreach ($users as $user)
                      <tr>
-                
+                        <form action="{{route('user.update',[$user])}}" method="POST">
                         <td>{{$user->name}}</td>
                         <td>
                             
@@ -31,6 +35,14 @@
 
                                 </select>
                         </td>
+
+                        <td>
+                           
+                                @method('PUT')
+                                @csrf
+                                <button type="submit" class="btn btn-warning">Edit</button>
+                            </form>
+                        </td>
                
                      </tr>
               
@@ -43,6 +55,12 @@
        
       </div>
     </div>
+
+    @endif
+@else
+{{-- HACER REDIRECT --}}
+NO TIENES PERMISOS
+@endif
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -64,3 +82,4 @@ $(document).ready( function () {
 </script>
     
 @endsection
+

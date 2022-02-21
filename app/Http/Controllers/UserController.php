@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Laravel\Jetstream\Jetstream;
 
-class UserController extends Controller
+class UserController extends Controller 
 {
     /**
      * Display a listing of the resource.
@@ -37,7 +41,34 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        // $request->validate([
+        //     'name' => 'required',
+        //     'img' => 'required',   
+        // ]);
+
+        $request->validate( [
+            'name' => 'required|string',
+            'sur_name' => 'required|string',
+            'dni' => 'required|string',
+            'zip_code'=>'required|string',
+            'email' => 'required|string|unique',
+            'password' => 'required',    
+        ]);
+       
+        return User::create([
+            'name' => $request['name'],
+            'sur_name' => $request['sur_name'],
+            'dni' => $request['dni'],
+            'phone' => $request['phone'],
+            'zip_code' => $request['zip_code'],
+            'user_types' => $request['user_types'],
+            'email' => $request['email'],
+            'password' => Hash::make($request['password']),
+        ]);
+
+
+        return view('event.index');
     }
 
     /**
@@ -58,9 +89,29 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, User $user)
     {
-        //
+
+
+        $request->validate([
+            'name' => 'required',
+            'sur_name' => 'required',
+            'zip_code' => 'required',
+            'phone' => 'required',
+        ]);
+
+     
+        $user -> name = $request['name'];
+        $user -> sur_name = $request['sur_name'];
+        $user -> zip_code = $request['zip_code'];
+        $user -> phone = $request['phone'];
+        
+        // return view('user.edit',['user' =>$user]);
+        // $user -> user_types = $request['user_types'];
+      
+        $user->save();
+
+        return redirect()->back()->with('message', 'usuario actualizado');   
     }
 
     /**
@@ -70,9 +121,15 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+
+     
+        $user -> user_types = $request['user_types'];
+      
+        $user->save();
+
+        return redirect()->back()->with('message', 'permisos de usuario actualizados');   
     }
 
     /**

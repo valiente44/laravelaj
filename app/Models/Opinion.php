@@ -9,6 +9,9 @@ class Opinion extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['opinion_text','rating','user_id','event_id'];
+
+
     function User() {
         return $this->belongsTo('App\Models\User');
         ;

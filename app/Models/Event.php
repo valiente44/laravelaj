@@ -19,15 +19,43 @@ class Event extends Model
         return $this->hasMany('App\Models\Booking');
         ;
     }
+    function opinions() {
+        return $this->hasMany('App\Models\Opinion');
+        ;
+    }
 
     function categoria(){
         return $this->belongsTo('App\Models\Events');
     }
 
-    //improvisado
+  
     function zone() {
         return $this->belongsTo('App\Models\Zone');
         ;
     }
+
+    public function scopeName($events,$name,$categoria){
+        if($name && $categoria ){
+            $events = Event::where('name', 'LIKE',"%$name%", 'AND', 'category_id', "=", "$categoria")
+            ->orWhere('name', 'LIKE',"%$name%")
+            ->orWhere('category_id', "=", "$categoria")
+            ->get();
+
+            return $events;
+        }
+
+        if($name){
+            $events = Event::where('name', 'LIKE',"%$name%")->get();
+            return $events;
+        }
+
+        if($categoria){
+            $events = Event::where('category_id', '=' , $categoria)->get();
+            return $events;
+        }
+    }
+
+
+
 
 }

@@ -1,8 +1,13 @@
 @extends('theme.base')
 
+
 @section('form')
+
+@if(Auth::check())
+
+@if (Auth::user()->user_types==1)
      
-        <div class="container">
+        <div class="container" style="width:100%">
     
 
             @if (isset($event))
@@ -24,10 +29,11 @@
         @csrf                
 
             {{-- Titulo del evento --}}
-            <div class="mb">
-
+            <div class="mb-4">
+                
                 <label for="name" class="form-label">Titulo del Evento</label>
-                <input type="text" id="name" name="name" class="form-control" placeholder="nombre del cliente" required value="{{old('name') ?? @$event->name}}">
+                <input type="text" id="name" name="name" class="form-control text-center" placeholder="Nombre del Evento" required value="{{old('name') ?? @$event->name}}">
+                
                 @error('name')
                 <p class="form-text">{{ $message }}</p>
                 @enderror
@@ -40,7 +46,7 @@
             <h1 class="text-center">Crear cliente</h1>
             @endif --}}
 
-            <div class="mb">
+            <div class="mb-4">
                 <label for="category" class="form-label">Seleciona la Categoria del Evento</label>
                 
                 @if (isset($event))
@@ -78,7 +84,7 @@
 
              
     
-                <p class="form-text">Seleciona la categoria</p>
+                <p class="form-text"></p>
                 @error('category_id')
                 <p class="form-text">{{ $message }}</p>
                 @enderror
@@ -90,7 +96,7 @@
             @else --}}
             {{-- TO DO --}}
             @if (isset($event))
-            <div class="mb">
+            <div class="mb-4">
                 <label for="avatar">Imagen evento:</label>
                 <input type="file" name="img" id="img">
                 <br>
@@ -101,7 +107,7 @@
                 {{-- <input type="file" id="avatar" name="avatar"accept="image/png, image/jpeg"> --}}
             </div>
             @else
-            <div class="mb">
+            <div class="mb-4">
                 <label for="avatar">Imagen evento:</label>
                 <input type="file" name="img" id="img" value="{{old('img') ?? @$event->img}}">
                 @error('img')
@@ -114,10 +120,10 @@
             
             @if (isset($event))
 
-            <div class="mb">
+            <div class="mb-4">
                 <label for="zone" class="form-label">Zona del evento</label>
                 
-                <select name="zone_id"  class="form-select form-select-sm" aria-label=".form-select-sm example">
+                <select name="zone_id"  class="form-select form-select-xl" aria-label=".form-select-sm example">
                     @foreach ($zones as $zone)
                 
                     <option id="zone_id" value="{{$zone->id}}"
@@ -137,10 +143,10 @@
                         
             @else
 
-            <div class="mb">
+            <div class="mb-4">
                 <label for="zone" class="form-label">Zona del evento</label>
                 
-                <select name="zone_id"  class="form-select form-select-sm" aria-label=".form-select-sm example">
+                <select name="zone_id"  class="form-select form-select-xl" aria-label=".form-select-sm example">
                     @foreach ($zones as $zone)
                 
                     <option id="zone_id" value="{{$zone->id}}">{{$zone->zone_name}}</option>
@@ -148,7 +154,7 @@
                     @endforeach
                   </select>
                
-                <p class="form-text">Seleciona la zona</p>
+                <p class="form-text"></p>
                 @error('zone_id')
                 <p class="form-text">Seleciona la zona{{ $message }}</p>
                 @enderror
@@ -159,7 +165,7 @@
 
             @endif
 
-            <div class="mb">
+            <div class="mb-4">
                 <label for="fecha_inicio">Fecha de inicio: </label>
                 <input id="fecha_inicio" name="fecha_inicio" type="date" value="{{old('fecha_inicio') ?? @$event->fecha_inicio}}">
                 @error('fecha_inicio')
@@ -167,7 +173,7 @@
                 @enderror
             </div>
 
-            <div class="mb">
+            <div class="mb-4">
                 <label for="fecha_final">Fecha de final: </label>
                 <input id="fecha_final" name="fecha_final" type="date" value="{{old('fecha_inicio') ?? @$event->fecha_inicio}}">
                 @error('fecha_final')
@@ -175,7 +181,7 @@
                 @enderror
             </div>
 
-            <div class="mb">
+            <div class="mb-4">
                 <label for="hora_inicio">Hora inicio: </label>
                 <input type="time" id="hora_inicio" name="hora_inicio" required value="{{old('hora_inicio') ?? @$event->hora_inicio}}">
                 @error('hora_inicio')
@@ -183,7 +189,7 @@
                 @enderror
             </div>
 
-            <div class="mb">
+            <div class="mb-4">
                 <label for="hora_fin">Hora  fin: </label>
                 <input type="time" id="hora_fin" name="hora_fin" required  value="{{old('hora_fin') ?? @$event->hora_fin}}">
                 @error('hora_fin')
@@ -192,10 +198,10 @@
             </div>
 
      
-            <div class="mb">
+            <div class="mb-4">
                <label for="description" class="form-label">Descripcion</label>
                 <textarea id="description" name="description" value="{{old('description') ?? @$event->description}}" cols="30" rows="4" class="form-control">{{@$event->description}}</textarea>
-                <p class="form-text">Escribe la descripcion</p>
+                <p class="form-text"></p>
                 @error('description')
                 <p class="form-text">{{ $message }}</p>
                 @enderror
@@ -204,7 +210,7 @@
 
 
             <div class="mb py-3">
-                <label for="capacity">Capacity: </label>
+                <label for="capacity">Capacidad: </label>
                 <input id="capacity" name="capacity"  type="number" value="{{old('capacity') ?? @$event->capacity}}" >
                 @error('capacity')
                 <p class="form-text">{{ $message }}</p>
@@ -242,7 +248,13 @@
        
        
         </form>
+        @endif
+        @else
+        {{-- HACER REDIRECT --}}
+        NO TIENES PERMISOS
+        @endif
         
         </div>
             
  @endsection
+

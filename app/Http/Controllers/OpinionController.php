@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Opinion;
 use App\Http\Requests\StoreOpinionRequest;
 use App\Http\Requests\UpdateOpinionRequest;
+use Illuminate\Support\Facades\Session;
 
 class OpinionController extends Controller
 {
@@ -36,7 +37,31 @@ class OpinionController extends Controller
      */
     public function store(StoreOpinionRequest $request)
     {
-        //
+
+     
+        $request->validate([
+            'opinion_text' => 'required',
+            'rating' => 'required|Integer',
+         
+            
+        ]);
+
+            
+            
+       
+
+        Opinion::create([
+            'opinion_text' => $request->input('opinion_text'),
+            'rating' => $request->input('rating'),
+            'user_id' => $request->input('user_id'),
+            'event_id' => $request->input('event_id'),
+            
+        ]);
+
+
+        
+        return redirect()->back()->with('message','Reseña creada');  
+        // return view('admin.events',['events' =>$events]);
     }
 
     /**

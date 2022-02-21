@@ -19,21 +19,21 @@ class UserSeeder extends Seeder
     {
         $faker = Factory::create('es_ES');
         
-        // DB::table('users')->insert([
-        //     'name' => 'admin',
-        //     'sur_name' => 'aaa',
-        //     'dni' =>'399998846T',
-        //     'email' => 'admin@admin.com',
-        //     'zip_code' => '45555',
-        //     'phone' => '7777777',
-        //     'user_types' => '1',
-        //     'password' => Hash::make('password'),
-        // ]);
+        DB::table('users')->insert([
+            'name' => 'admin',
+            'sur_name' => 'aaa',
+            'dni' =>'399998846T',
+            'email' => 'admin@admin.com',
+            'zip_code' => '45555',
+            'phone' => '7777777',
+            'user_types' => '1',
+            'password' => Hash::make('password'),
+        ]);
         
         for($i = 0; $i < 15; $i++){
             User::create([
                'name' => $faker->name,
-               'sur_name' => $faker->name,
+               'sur_name' => 'apellido',
                'dni' => $faker->dni,
                'zip_code' => $faker->name,
                'phone' => '7777777',

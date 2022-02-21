@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Zone;
 use App\Http\Requests\StoreZoneRequest;
 use App\Http\Requests\UpdateZoneRequest;
+use Illuminate\Support\Facades\Session;
 
 class ZoneController extends Controller
 {
@@ -25,7 +26,9 @@ class ZoneController extends Controller
      */
     public function create()
     {
-        //
+        $zones = Zone::all();
+        // $zones = Zone::all();
+        return view('zones.index',['zones' =>$zones]);
     }
 
     /**
@@ -36,7 +39,22 @@ class ZoneController extends Controller
      */
     public function store(StoreZoneRequest $request)
     {
-        //
+        $request->validate([
+            'zone_name' => 'required',
+            'adress' => 'required',
+            'surface' => 'required',
+          
+        ]);
+
+        Zone::create([
+            'zone_name' => $request->input('zone_name'),
+            'adress' => $request->input('adress'),
+            'surface' => $request->input('surface'),
+        ]);
+
+        $zones = Zone::all();
+
+        return view('zone.index',['zones'=>$zones]);
     }
 
     /**
@@ -58,7 +76,7 @@ class ZoneController extends Controller
      */
     public function edit(Zone $zone)
     {
-        //
+        return view('zones.edit',['zone' =>$zone]);
     }
 
     /**
@@ -70,7 +88,28 @@ class ZoneController extends Controller
      */
     public function update(UpdateZoneRequest $request, Zone $zone)
     {
-        //
+
+        // dd($request);
+        $request->validate([
+            'zone_name' => 'required',
+            'adress' => 'required',
+            'surface' => 'required',
+          
+        ]);
+
+     
+        $zone -> zone_name = $request['zone_name'];
+        $zone -> adress = $request['adress'];
+        $zone -> surface = $request['surface'];
+        
+  
+        $zone->save();
+        // return dd($event);
+
+    
+        return redirect()->back()->with('message', 'zona editada exitosamente');   
+
+
     }
 
     /**
@@ -81,6 +120,14 @@ class ZoneController extends Controller
      */
     public function destroy(Zone $zone)
     {
-        //
+     
+        foreach($zone->events as $event){
+            $event->delete();
+        }
+
+        $zone->delete();
+        return redirect()->back()->with('message','Has eliminado con exito');   
+   
+     
     }
 }

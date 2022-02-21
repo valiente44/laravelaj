@@ -14,7 +14,7 @@ class Zone extends Model
         ;
     }
 
-    function event(){
+    function events(){
         return $this->hasMany('App\Models\Event');
         ;
     }

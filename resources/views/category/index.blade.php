@@ -1,11 +1,18 @@
 @extends('theme.base')
 
+
+
 @section('categoryIndex')
+
+@if(Auth::check())
+
+@if (Auth::user()->user_types==1)
+
 
 <div class="container">
     <div class="row ">
 
-
+    
         <form action="{{route('category.store')}}" method="POST">
  
             @csrf
@@ -44,6 +51,11 @@
         </div>
       
     </div>    
+    @endif
+@else
+{{-- HACER REDIRECT --}}
+NO TIENES PERMISOS
+@endif
 </div>
 
     

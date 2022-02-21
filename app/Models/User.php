@@ -23,8 +23,15 @@ class User extends Authenticatable
      *
      * @var string[]
      */
+
+
     protected $fillable = [
         'name',
+        'sur_name',
+        'dni',
+        'phone',
+        'zip_code',
+        'user_types',
         'email',
         'password',
     ];
@@ -62,7 +69,7 @@ class User extends Authenticatable
     public function isAdmin(){
         return $this->user_types===1;
     }
-    function booking() {
+    function bookings() {
         return $this->hasMany('App\Models\Booking');
         ;
     }

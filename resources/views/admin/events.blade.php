@@ -1,6 +1,9 @@
 @extends('theme.base')
 
 @section('eventsAdmin')
+@if(Auth::check())
+
+@if (Auth::user()->user_types==1)
 
 @if (session('message'))
   <div class="message-has-been-sent-confirmation">
@@ -12,19 +15,23 @@
 <div class="container py-2">
     <h1 class="text-center">Listado de Eventos!</h1>
     
-    <table class="table py-2">
+    <table class="table table-striped" style="width:100%">
         @foreach ($events as $event)
         <thead>
             <tr><th>Titulo del evento</th>
-            <th>img</th>
-            <th>fecha evento</th>
+            <th>Foto</th>
+            <th>Fecha evento</th>
+            <th>Zona</th>
+            <th>Capacidad</th>
             <th>Acciones</th>
         </tr></thead>
         <tbody>
                 <tr>
                 <td>{{$event->name}}</td>
-                <td>65</td>
+                <td><img src="http://localhost:8000/storage/{{$event->img}}" style="widht:50px !important; height:50px !important;"></td>
                 <td>{{$event->fecha_inicio}} / {{$event->fecha_final}}</td>
+                <td>{{$event->zone->zone_name}}, {{$event->zone->adress}}, {{$event->zone->surface}}</td>
+                <td>{{$event->capacity}}</td>
                 <td>
                     <form action="{{route('event.edit',[$event->id])}}" method="POST" class="d-inline">
                         @method('GET')
@@ -41,8 +48,8 @@
                        </form>
 
 
-                    <a href="http://localhost:8000/client/9/edit" class="btn btn-info">Ver</a>
-
+                    <a href="{{route('event.show',[$event->id])}}" class="btn btn-info">Ver</a>
+                    {{-- http://localhost:8000/client/9/edit --}}
                 </td>
                 </tr>
                 
@@ -58,10 +65,11 @@
 </div>
 
 
+@endif
 
-
-
-
+@else
+NO TIENES PERMISOS
+@endif
 
 
 

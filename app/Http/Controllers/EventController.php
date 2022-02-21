@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Event;
+use App\Models\User;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Zone;
@@ -20,18 +21,43 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
+
+        $events = Event::all();
+        $categorias = Category::all();
+        $zones = Zone::all();
+        $destacados  = Event::orderBy('created_at','DESC')->limit(4)->get();
+
+
+
+        
+                $name  = $request->name;
+                $categoria = $request->category_id;
+           
+
+          
+           
+                $events = Event::orderBy('id','ASC')
+                ->name($name,$categoria);
+             
+                return view('eventos.index',['events' =>$events,'categories' => $categorias, 'zones' => $zones, 'destacados'=> $destacados]);
+
+
+
+
+
+
         // dd($request->all());
         
-        $events = Event::all();
-        switch ($request->counter) {
-            case 0:
-                return view('admin.events',['events' =>$events]);
-                break;
-            case 1:
-                return view('eventos.index',['events' =>$events]);
-                break;
+        // $events = Event::all();
+        // switch ($request->counter) {
+        //     case 0:
+        //         return view('admin.events',['events' =>$events]);
+        //         break;
+        //     case 1:
+        //         return view('eventos.index',['events' =>$events]);
+        //         break;
     
-        }
+        // }
       
     }
 
@@ -42,6 +68,7 @@ class EventController extends Controller
      */
     public function create()
     {
+    
         $zones = Zone::all();
         $category=Category::all();
         return view('formularios.form',['categories' =>$category , 'zones'=>$zones]);

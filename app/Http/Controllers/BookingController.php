@@ -47,6 +47,13 @@ class BookingController extends Controller
         //  ::where('id', $id);
 
         // $reserva -> event_id
+    
+        //  if($reserva->user){
+      
+        //  }
+        //  return dd($request->user_id);
+        // if($request->user_id )
+        
         $bookings = Booking::where('event_id', '=' , $request->event_id)->get()->sum('tickets');
     
 
@@ -126,6 +133,8 @@ class BookingController extends Controller
      */
     public function destroy(Booking $booking)
     {
-        //
+        $booking->delete();
+        return redirect()->back()->with('message','Reserva eliminada');  
+              
     }
 }
